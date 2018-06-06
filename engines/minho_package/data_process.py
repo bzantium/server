@@ -164,9 +164,9 @@ def find_vocab(character, vocab):
         character = "노"
     elif character == "려":
         character = "여"
-    for i, word in enumerate(vocab.keys()):
-        if character == word[0]:
-            candidate.append(i)
+    for key, value in vocab.items():
+        if character == key[0]:
+            candidate.append(value)
     try:
         result = random.sample(candidate, 1)[0]
     except ValueError:
