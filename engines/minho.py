@@ -40,4 +40,5 @@ class HosEngine(Engine):
             result = model.inference([number])
             r = reverse_vocab[number] + ' ' + indexToSentence(result, reverse_vocab)[0] + "\n"
             res += r
+
         return res

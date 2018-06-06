@@ -9,11 +9,9 @@ KaKao = KaKaoAgent()
 
 @app.route('/keyboard', methods=['GET'])
 def keyboard_handler():
-    data = request.args.get('data')
-    # res = KaKao.handle_keyboard_webhook()
-    text = HosEngine().activate(data)
+    res = KaKao.handle_keyboard_webhook()
 
-    return text
+    return res
 
 
 @app.route('/message', methods=['POST'])
@@ -31,9 +29,8 @@ def keyboard_handler(res):
     :param res: response
     '''
     res.keyboard_buttons = [
-        'button1',
-        'button2',
-        'button3'
+        '삼행시 시작',
+        '만든 사람들'
     ]
 
 
@@ -43,24 +40,25 @@ def handle_message(req, res):
     :param req: request from kakao
     :param res: response
     '''
-    echo_message = req.content
+    data = req.content
+    if len(data) > 3:
+        text= "3글자가 넘어가면 안됩니다."
+    else:
+        text = HosEngine().activate(data)
 
-    res.text = "Echo Message: " + echo_message
-
-
-@KaKao.handle_message(['hello', 'hi'])
-def greeting_callback(req, res):
-    '''
-    :param req: request from kakao
-    :param res: response
-    '''
-    res.text = "안녕 :)"
+    res.text = text
 
 
-@KaKao.handle_message(['(^yo.*)'])
-def use_yo_engine(req, res):
-    text = req.content[-1]
-    res.text = YosEngine().activate(text)
+@KaKao.handle_message(['삼행시 시작, 시작'])
+def start_message(req, res):
+    text = "삼행시를 시작합니다! 3글자만 말해주세요!"
+    res.text = text
+
+
+@KaKao.handle_message(['만든 사람들'])
+def creator_info(req, res):
+    text = "권득신, 류민호, 전윤길, 황원요"
+    res.text = text
 
 
 if __name__ == "__main__":
