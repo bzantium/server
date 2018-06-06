@@ -57,7 +57,7 @@ def start_message(req, res):
 
 @KaKao.handle_message(['사용법 보기', '사용법'])
 def creator_info(req, res):
-    text = "3글자 미만을 말하시면 됩니다."
+    text = "3글자 이하로 말하시면 됩니다."
     res.text = text
 
 
