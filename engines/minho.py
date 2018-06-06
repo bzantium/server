@@ -41,4 +41,4 @@ class HosEngine(Engine):
             r = reverse_vocab[number] + ' ' + indexToSentence(result, reverse_vocab)[0] + "\n"
             res += r
 
-        return res
+        return res[:-1]
