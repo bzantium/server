@@ -16,7 +16,7 @@ def init_model():
     return model, vocab
 
 model, vocab = init_model()
-reverse_vocab = inv_map = {v: k for k, v in vocab.items()}
+reverse_vocab = {v: k for k, v in vocab.items()}
 
 
 class HosEngine(Engine):
@@ -27,11 +27,11 @@ class HosEngine(Engine):
         :param text: 한 글자
         :return: 모델링을 거친 문장
         """
-        answer = self.model(text)
+        answer = self._model(text)
 
         return answer
 
-    def model(self, text):
+    def _model(self, text):
         res = ""
         for t in text:
             number = find_vocab(t, vocab)
