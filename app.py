@@ -30,7 +30,7 @@ def keyboard_handler(res):
     '''
     res.keyboard_buttons = [
         '삼행시 시작',
-        '만든 사람들'
+        '사용법 보기'
     ]
 
 
@@ -55,9 +55,9 @@ def start_message(req, res):
     res.text = text
 
 
-@KaKao.handle_message(['만든 사람들'])
+@KaKao.handle_message(['사용법 보기', '사용법'])
 def creator_info(req, res):
-    text = "권득신, 류민호, 전윤길, 황원요"
+    text = "3글자 미만을 말하시면 됩니다."
     res.text = text
 
 
