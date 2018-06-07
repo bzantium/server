@@ -1,14 +1,10 @@
-import os
 import numpy as np
 import re, random
 from collections import Counter
 
-PATH = os.path.dirname(os.path.realpath(__file__))
-
 def read_txt(data):
     lines = []
-
-    with open(os.path.join(PATH, data), encoding='utf-16') as f:
+    with open(data, encoding='utf-16') as f:
         for line in f:
             lines.append(line)
     return lines
@@ -158,6 +154,10 @@ def find_vocab(character, vocab):
         character = "앙"
     elif character == "름" or character == "늠":
         character = "음"
+    elif character == "랴" or character == "냐":
+        character = "야"
+    elif character == "력" or character == "녁":
+        character = "역"
     elif character == "류":
         character = "유"
     elif character == "로":
