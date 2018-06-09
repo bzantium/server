@@ -1,14 +1,16 @@
 import tensorflow as tf
 import os
+import json
 from .engine import Engine
 from .minho_package.data_process import *
 from .minho_package.model import reRNN
 
-PATH = "minho_package"
+PATH = os.path.dirname(os.path.realpath(__file__))
+
 
 def init_model():
     sess = tf.Session()
-    with open(os.path.join(PATH, 'vocab.json'), 'r') as fp:
+    with open(os.path.join(PATH, 'minho_package/vocab.json'), 'r') as fp:
         vocab = json.load(fp)
     reverse_vocab = dict()
     for key, value in vocab.items():
@@ -16,7 +18,7 @@ def init_model():
     vocab_size = len(vocab)
     model = reRNN(sess=sess, name="reRNN", max_step=50, vocab_size=vocab_size)
     saver = tf.train.Saver()
-    saver.restore(sess, tf.train.latest_checkpoint(PATH + "/models"))
+    saver.restore(sess, tf.train.latest_checkpoint(PATH + "/minho_package/models"))
 
     return model, vocab, reverse_vocab
 
