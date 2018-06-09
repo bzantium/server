@@ -1,22 +1,26 @@
 import tensorflow as tf
-
+import os
 from .engine import Engine
 from .minho_package.data_process import *
 from .minho_package.model import reRNN
 
+PATH = "minho_package"
+
 def init_model():
     sess = tf.Session()
-    data = read_txt('novel.txt')
-    data = preprocess(data)
-    vocab, reverse_vocab, vocab_size = build_vocab(data)
+    with open(os.path.join(PATH, 'vocab.json'), 'r') as fp:
+        vocab = json.load(fp)
+    reverse_vocab = dict()
+    for key, value in vocab.items():
+        reverse_vocab[value] = key
+    vocab_size = len(vocab)
     model = reRNN(sess=sess, name="reRNN", max_step=50, vocab_size=vocab_size)
     saver = tf.train.Saver()
     saver.restore(sess, tf.train.latest_checkpoint(PATH + "/models"))
 
-    return model, vocab
+    return model, vocab, reverse_vocab
 
-model, vocab = init_model()
-reverse_vocab = {v: k for k, v in vocab.items()}
+model, vocab, reverse_vocab = init_model()
 
 
 class HosEngine(Engine):
@@ -36,7 +40,7 @@ class HosEngine(Engine):
         for t in text:
             number = find_vocab(t, vocab)
             if number == "retry":
-                return "Fail"
+                return ("[%s]로 시작하는 단어가 없습니다." % t)
             result = model.inference([number])
             r = reverse_vocab[number] + ' ' + indexToSentence(result, reverse_vocab)[0] + "\n"
             res += r

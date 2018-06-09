@@ -56,7 +56,11 @@ class reRNN:
                     input_ = tf.nn.embedding_lookup(self.embedding, prediction)
                 output, state = self.cell(input_, state)
                 inf_logits = tf.add(tf.matmul(output, self.W), self.b)
-                prediction = tf.argmax(inf_logits, 1)
+                values, indices = tf.nn.top_k(inf_logits, 2)
+                indices = tf.squeeze(indices, axis=0)
+                index = tf.squeeze(tf.multinomial(values, 1), axis=0)
+                prediction = tf.reshape(indices[index[0]], shape=(-1,))
+                #prediction = tf.argmax(inf_logits, 1)
                 self.predictions.append(prediction)
             self.predictions = tf.stack(self.predictions, 1)
 
